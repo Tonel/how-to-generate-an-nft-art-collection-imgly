@@ -1,23 +1,21 @@
-import logo from './logo.svg';
+import NFTArtCollectionGenerator from './components/NFTArtCollectionGenerator/NFTArtCollectionGenerator';
+import React from 'react';
 import './App.css';
+// CodeSandbox does not parse @imports properly,
+// so the styles are imported here
+import './styles/fonts.css';
+import './styles/typography.css';
+import './styles/css-reset.css';
+import './styles/variables.css';
+import './styles/ci-v11-variables.css';
+import './styles/util.css';
+import './styles/forms.css';
+import './styles/button.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NFTArtCollectionGenerator />
     </div>
   );
 }
