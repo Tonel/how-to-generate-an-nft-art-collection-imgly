@@ -4,7 +4,7 @@ import { DOGS } from "./data"
 import styles from './NFTArtCollectionGenerator.module.css'
 import React, { useEffect, useRef, useState } from 'react'
 
-function NFTArtCollectionGenerator() {
+export default function NFTArtCollectionGenerator() {
   const engineRef = useRef(null)
 
   const [tradingCardImages, setTradingCardImages] = useState(new Array(DOGS.length).fill(null))
@@ -20,20 +20,18 @@ function NFTArtCollectionGenerator() {
       }
     }
 
-    if (navigator.userAgent !== 'ReactSnap') {
-      CreativeEngine
-          .init(config)
-          .then(async (instance) => {
-            // importing the CE.SDK scene
-            await instance.scene.loadFromURL(
-                `${window.location.protocol + "//" + window.location.host}/assets/cesdk-nft-doggo.scene`
-            )
+    CreativeEngine
+        .init(config)
+        .then(async (instance) => {
+          // importing the CE.SDK scene
+          await instance.scene.loadFromURL(
+              `${window.location.protocol + "//" + window.location.host}/assets/cesdk-nft-doggo.scene`
+          )
 
-            engineRef.current = instance
+          engineRef.current = instance
 
-            setInitialized(true)
-          })
-    }
+          setInitialized(true)
+        })
 
     return function shutdownCreativeEngine() {
       engineRef?.current?.dispose()
@@ -56,12 +54,25 @@ function NFTArtCollectionGenerator() {
       // its trading card with CE.SDK
       for (const dog of DOGS) {
         // giving each variable defined in the CE.SDK scene
-        // a value based on the data received as parameter
+        // a value based on the dog data
         cesdk.variable.setString('name', dog.name)
         cesdk.variable.setString('date', dog.date)
         cesdk.variable.setString('chain', dog.chain)
         cesdk.variable.setString('drool', dog.drool)
         cesdk.variable.setString('courage', dog.courage)
+
+        // retrieving the background block
+        const backgroundBlock = cesdk.block.findByType('page')[0]
+        if (backgroundBlock) {
+          // setting the background to a random color
+          cesdk.block.setBackgroundColorRGBA(
+              backgroundBlock,
+              Math.random(), // r (from 0 to 1)
+              Math.random(), // g (from 0 to 1)
+              Math.random(), // b (from 0 to 1)
+              1.0 // alpha (from 0 to 1)
+          )
+        }
 
         const blob = await cesdk.block.export(
             cesdk.block.findByType('scene')[0],
@@ -130,5 +141,3 @@ function NFTArtCollectionGenerator() {
       </div>
   )
 }
-
-export default NFTArtCollectionGenerator
